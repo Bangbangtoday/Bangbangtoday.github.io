@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <link rel="stylesheet" href="weather.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manjari:wght@100&display=swap" rel="stylesheet">
+  </head>
+
+  <body>
+    <nav>
+      <form>
+        <button id="search" type="submit"></button>
+        <input id="searchfield" type="text" placeholder="Enter Your City" autocomplete="off" autofocus>
+      </form>
+      <button id="cancel" type="button"></button>
+      <button id="refresh" type="button"></button>
+      <p id="errormessage"></p>
+      <ul id="suggestion"></ul>
+    </nav> 
+
+    <section id="wrapper">
+      <section>
+        <h1 id="city"></h1>
+        <h2 id="date"></h3>
+        <h3 id="description"></h3>
+      </section>
+      <section>
+        <h1 id="temp"></h1>
+        <h2 id="tempminmax"></h2>
+      </section>
+    </section>
+
+    <section id="forecastwrapper">
+      <section class="forecasticon">
+        <header class="forecastday"></header>
+        <div class="forecastdescription"></div>
+        <div class="forecasttempminmax"></div>
+      </section>
+      <section class="forecasticon">
+        <header class="forecastday"></header>
+        <div class="forecastdescription"></div>
+        <div class="forecasttempminmax"></div>
+      </section>
+      <section class="forecasticon">
+        <header class="forecastday"></header>
+        <div class="forecastdescription"></div>
+        <div class="forecasttempminmax"></div>
+      </section>
+      <section class="forecasticon">
+        <header class="forecastday"></header>
+        <div class="forecastdescription"></div>
+        <div class="forecasttempminmax"></div>
+      </section>
+      <section class="forecasticon">
+        <header class="forecastday"></header>
+        <div class="forecastdescription"></div>
+        <div class="forecasttempminmax"></div>
+      </section>
+    </section>
+
+    <script src="weather.js"></script>
+  </body>
+</html>
