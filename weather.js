@@ -1,14 +1,7 @@
-const weekday = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
+const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 let lat;
 let lon;
+let currentFocus = -1;
 const APIKey = "686b6c2955f4cf716d487e970ca118a2";
 const body = document.body;
 const city = document.querySelector("#city");
@@ -53,11 +46,7 @@ function getTemp(target, temperature) {
 }
 
 function getTempMinMax(target, temperature) {
-  target.innerText =
-    Math.round(temperature.temp_min - 273) +
-    "°C - " +
-    Math.round(temperature.temp_max - 273) +
-    "°C";
+  target.innerText = Math.round(temperature.temp_min - 273) + "°C - " + Math.round(temperature.temp_max - 273) + "°C";
 }
 
 function getDay(target, day) {
@@ -69,46 +58,34 @@ function getForecastTempMinMax(target, temperature, key1, key2) {
   for (let i = 0, k = key1; i <= 8, k <= key2; i++, k++) {
     arr[i] = temperature.list[k].main.temp;
   }
-  target.innerText =
-    Math.round(Math.min(...arr) - 273) +
-    "°C - " +
-    Math.round(Math.max(...arr) - 273) +
-    "°C";
+  target.innerText = Math.round(Math.min(...arr) - 273) + "°C - " + Math.round(Math.max(...arr) - 273) + "°C";
 }
 
 function changeBG(day) {
   switch (day.weather[0].main) {
-    default:
-      body.style.backgroundImage =
-        "linear-gradient(rgb(34, 93, 160), rgb(90, 170, 245))";
     case "Clear":
-      body.style.backgroundImage =
-        "url('https://c1.wallpaperflare.com/preview/24/65/246/sky-cloud-solo-only.jpg')";
+      body.style.backgroundImage = "url('pictures/clear-bg-image.jpeg')";
       break;
     case "Clouds":
-      body.style.backgroundImage =
-        "url('https://c1.wallpaperflare.com/preview/677/362/336/cloud-of-bunch-of-blue-sky-weather.jpg')";
+      body.style.backgroundImage = "url('pictures/clouds-bg-image.jpeg')";
       break;
     case "Rain":
-      body.style.backgroundImage =
-        "url('https://wallpaperfordesktop.com/wp-content/uploads/2021/09/Rain-Background-Wallpaper-1024x576.jpg')";
+      body.style.backgroundImage = "url('pictures/rain-bg-image.jpeg')";
       break;
     case "Drizzle":
-      body.style.backgroundImage =
-        "url('https://wallpaperfordesktop.com/wp-content/uploads/2021/09/Rain-Background-Photos-1024x576.jpg')";
+      body.style.backgroundImage = "url('pictures/drizzle-bg-image.jpeg')";
       break;
     case "Fog":
-      body.style.backgroundImage =
-        "url('https://wallpapershome.com/images/pages/pic_h/12603.jpg')";
+      body.style.backgroundImage = "url('pictures/fog-bg-image.jpeg')";
       break;
     case "Thunderstorm":
-      body.style.backgroundImage =
-        "url('https://images.wallpaperscraft.com/image/single/lightning_night_horizon_121845_1920x1080.jpg')";
+      body.style.backgroundImage = "url('pictures/thunderstorm-bg-image.jpeg')";
       break;
     case "Snow":
-      body.style.backgroundImage =
-        "url('https://www.pixelstalk.net/wp-content/uploads/2015/01/Snow-winter-landscape-wallpaper-widescreen.jpg')";
+      body.style.backgroundImage = "url('pictures/snow-bg-image.jpeg')";
       break;
+    default:
+      body.style.backgroundImage = "linear-gradient(rgb(34, 93, 160), rgb(90, 170, 245))";
   }
 }
 
@@ -117,6 +94,22 @@ function clearErrorMessage() {
   errormessage.style.opacity = "0";
 }
 
+// get the latitude and the longtitude of the client once connected, which will be used for fetching weather data based on client's location
+window.addEventListener("load", () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      lat = position.coords.latitude;
+      lon = position.coords.longitude;
+      currentWeather();
+      weatherForecast();
+      searchSuggestion();
+    });
+  } else {
+    alert("Enable geolocation!!!");
+  }
+});
+
+// using the clients's location to fetch current weather data from API and display the data to the client
 async function currentWeather() {
   const callAPI = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${APIKey}`;
   const response = await fetch(callAPI);
@@ -131,6 +124,7 @@ async function currentWeather() {
   changeBG(data);
 }
 
+// using the clients's location to fetch weather forecast data from API and display the data to the client
 async function weatherForecast() {
   const callForecast = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIKey}`;
   const response = await fetch(callForecast);
@@ -144,6 +138,7 @@ async function weatherForecast() {
   }
 }
 
+// instead of using latitude and logtitude, this uses the name of a city to fetch weather forecast data from API and display the data to the client
 async function searchWithCity() {
   // const callCity = `https://api.openweathermap.org/geo/1.0/direct?q=${searchfield.value}&appid=${APIKey}`;
   const callCity = `https://api.openweathermap.org/data/2.5/weather?q=${searchfield.value}&appid=${APIKey}`;
@@ -165,6 +160,7 @@ async function searchWithCity() {
   }
 }
 
+// show suggestion of city as the client starts typing in the search field
 async function searchSuggestion() {
   const response = await fetch("./city.list.json");
   const data = await response.json();
@@ -185,31 +181,11 @@ async function searchSuggestion() {
       if (searchfield.value.length === 0) {
         suggestion.innerHTML === "";
       } else {
-        suggestion.innerHTML +=
-          "<li>" +
-          "<span>" +
-          listContent[i].slice(0, searchfield.value.length) +
-          "</span>" +
-          listContent[i].slice(searchfield.value.length) +
-          "</li>";
+        suggestion.innerHTML += "<li>" + "<span>" + listContent[i].slice(0, searchfield.value.length) + "</span>" + listContent[i].slice(searchfield.value.length) + "</li>";
       }
     }
   });
 }
-
-window.addEventListener("load", () => {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      lat = position.coords.latitude;
-      lon = position.coords.longitude;
-      currentWeather();
-      weatherForecast();
-      searchSuggestion();
-    });
-  } else {
-    alert("Enable geolocation!!!");
-  }
-});
 
 form.addEventListener("submit", (event) => {
   suggestion.style.display = "none";
@@ -231,7 +207,7 @@ cancel.addEventListener("click", () => {
   currentFocus = -1;
 });
 
-search.addEventListener("click", (event) => {
+search.addEventListener("click", () => {
   searchfield.style.width = "400px";
   searchfield.style.visibility = "visible";
   cancel.style.visibility = "visible";
@@ -251,33 +227,21 @@ suggestion.addEventListener("click", (event) => {
   suggestion.style.display = "none";
 });
 
-let currentFocus = -1;
+// highlight the city when the client uses arrow keys to navigate between the city suggestion
 searchfield.addEventListener("keydown", (event) => {
-  if (
-    event.key === "ArrowDown" &&
-    currentFocus < 9 &&
-    searchfield.value.length > 0
-  ) {
+  if (event.key === "ArrowDown" && currentFocus < 9 && searchfield.value.length > 0) {
     currentFocus++;
     searchfield.value = suggestionList[currentFocus].innerText;
     suggestionList[currentFocus].classList.add("focus");
     suggestionList[currentFocus - 1].classList.remove("focus");
     console.log(currentFocus);
-  } else if (
-    event.key === "ArrowUp" &&
-    currentFocus > 0 &&
-    searchfield.value.length > 0
-  ) {
+  } else if (event.key === "ArrowUp" && currentFocus > 0 && searchfield.value.length > 0) {
     currentFocus--;
     searchfield.value = suggestionList[currentFocus].innerText;
     suggestionList[currentFocus].classList.add("focus");
     suggestionList[currentFocus + 1].classList.remove("focus");
     console.log(currentFocus);
-  } else if (
-    event.key === "ArrowUp" &&
-    currentFocus === 0 &&
-    searchfield.value.length > 0
-  ) {
+  } else if (event.key === "ArrowUp" && currentFocus === 0 && searchfield.value.length > 0) {
     currentFocus--;
     suggestionList[currentFocus + 1].classList.remove("focus");
     searchfield.value = span[0].innerText;

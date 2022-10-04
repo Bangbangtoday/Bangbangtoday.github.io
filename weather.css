@@ -1,9 +1,20 @@
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 html {
   height: 100%;
   font-size: 16px;
 }
 
 body {
+  animation-name: fadein;
+  animation-duration: 5s;
   padding: 3vh 50px;
   background-repeat: no-repeat;
   background-size: cover;
@@ -36,7 +47,7 @@ form {
   cursor: pointer;
   background-color: transparent;
   border: none;
-  background-image: url("https://api.iconify.design/fe/search.svg?color=%23ffffff");
+  background-image: url("pictures/searchicon.svg");
   background-repeat: no-repeat;
   background-size: contain;
   transition: 0.3s;
@@ -101,11 +112,7 @@ li:hover {
   height: 0px;
   line-height: 40px;
   color: rgb(203, 58, 58);
-  background-image: linear-gradient(
-    to top,
-    rgba(255, 255, 255, 0.357),
-    rgba(255, 255, 255, 0)
-  );
+  background-image: linear-gradient(to top, rgba(255, 255, 255, 0.357), rgba(255, 255, 255, 0));
   margin: -11px 0 0 45px;
   opacity: 0;
   font-size: 1.3rem;
@@ -122,7 +129,7 @@ li:hover {
   cursor: pointer;
   background-color: transparent;
   border: none;
-  background-image: url("https://api.iconify.design/akar-icons/cross.svg?color=white");
+  background-image: url("pictures/crossicon.svg");
   background-repeat: no-repeat;
   background-size: contain;
   transition: 0.3s;
@@ -135,7 +142,7 @@ li:hover {
   cursor: pointer;
   background-color: transparent;
   border: none;
-  background-image: url("https://api.iconify.design/ep/refresh-right.svg?color=white");
+  background-image: url("pictures/refreshicon.svg");
   background-repeat: no-repeat;
   background-size: contain;
   float: right;
