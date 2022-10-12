@@ -38,7 +38,8 @@ function getDescription(target, day) {
 }
 
 function getIcon(target, day) {
-  target.style.backgroundImage = `url("http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png")`;
+  // target.style.backgroundImage = `url("http://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png")`;
+  target.style.backgroundImage = `url("pictures/${day.weather[0].icon}@2x.png")`;
 }
 
 function getTemp(target, temperature) {
