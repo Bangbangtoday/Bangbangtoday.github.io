@@ -2,6 +2,7 @@ const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday
 let lat;
 let lon;
 let currentFocus = -1;
+
 const APIKey = "686b6c2955f4cf716d487e970ca118a2";
 const body = document.body;
 const city = document.querySelector("#city");
@@ -29,7 +30,7 @@ function getName(target, name) {
 
 function getDate(target, date) {
   target.innerText = new Date(date * 1000).toLocaleString([], {
-    dateStyle: "full",
+    dateStyle: "full"
   });
 }
 
